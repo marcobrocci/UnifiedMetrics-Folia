@@ -24,12 +24,12 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew shadowJar --no-daemon
+        run: ./gradlew :unifiedmetrics-platform-bukkit:shadowJar --no-daemon
 
       - name: Collect JARs
         run: |
           mkdir -p artifacts
-          find platforms -path "*/build/libs/*.jar" ! -name "*-plain.jar" -exec cp {} artifacts/ \;
+          find platforms/bukkit -path "*/build/libs/*.jar" ! -name "*-plain.jar" -exec cp {} artifacts/ \;
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
