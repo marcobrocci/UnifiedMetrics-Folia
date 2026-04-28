@@ -23,29 +23,23 @@ plugins {
     kotlin("kapt") version "2.1.20" apply false
     kotlin("plugin.serialization") version "2.1.20" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
-
-    // The fabric-loom plugin must be defined in the root project for it to function properly.
-    id("fabric-loom") version "1.12.1" apply false
 }
 
 allprojects {
     group = "dev.cubxity.plugins"
     description = "Fully featured metrics collector agent for Minecraft servers."
     version = "0.3.10-SNAPSHOT"
-}
-
-// Fabric manages its own repositories via Loom — exclude it from root subprojects config
-val nonFabricProjects = subprojects.filter { it.name != "unifiedmetrics-platform-fabric" }
-
-configure(nonFabricProjects) {
-    apply(plugin = "java")
-    apply(plugin = "kotlin")
-    apply(plugin = "signing")
-    apply(plugin = "maven-publish")
 
     repositories {
         mavenCentral()
     }
+}
+
+subprojects {
+    apply(plugin = "java")
+    apply(plugin = "kotlin")
+    apply(plugin = "signing")
+    apply(plugin = "maven-publish")
 
     tasks.withType<KotlinCompile> {
         compilerOptions {

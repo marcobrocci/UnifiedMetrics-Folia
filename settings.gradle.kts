@@ -18,10 +18,6 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven {
-            name = "Fabric"
-            url = uri("https://maven.fabricmc.net/")
-        }
     }
 }
 
@@ -39,7 +35,7 @@ include(modulePrefix + platformPrefix + "bukkit")
 //include(modulePrefix + platformPrefix + "minestom")
 include(modulePrefix + platformPrefix + "velocity")
 include(modulePrefix + platformPrefix + "bungee")
-include(modulePrefix + platformPrefix + "fabric")
+//include(modulePrefix + platformPrefix + "fabric")
 
 include(modulePrefix + driverPrefix + "influx")
 include(modulePrefix + driverPrefix + "prometheus")
@@ -53,7 +49,7 @@ project(modulePrefix + platformPrefix + "bukkit").projectDir = File(platformsDir
 //project(modulePrefix + platformPrefix + "minestom").projectDir = File(platformsDir, "minestom")
 project(modulePrefix + platformPrefix + "velocity").projectDir = File(platformsDir, "velocity")
 project(modulePrefix + platformPrefix + "bungee").projectDir = File(platformsDir, "bungee")
-project(modulePrefix + platformPrefix + "fabric").projectDir = File(platformsDir, "fabric")
+//project(modulePrefix + platformPrefix + "fabric").projectDir = File(platformsDir, "fabric")
 
 val driversDir = File(rootDir, "drivers")
 project(modulePrefix + driverPrefix + "influx").projectDir = File(driversDir, "influx")
