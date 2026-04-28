@@ -46,13 +46,12 @@ subprojects {
 
     tasks.withType<KotlinCompile> {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
+            jvmTarget.set(JvmTarget.JVM_1_8)
             freeCompilerArgs = listOf("-opt-in=kotlin.RequiresOptIn")
         }
     }
     configure<JavaPluginExtension> {
-        targetCompatibility = JavaVersion.VERSION_21
-        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     configure<PublishingExtension> {
         repositories {
