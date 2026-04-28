@@ -15,6 +15,16 @@
  *     along with UnifiedMetrics.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            name = "Fabric"
+            url = uri("https://maven.fabricmc.net/")
+        }
+    }
+}
+
 rootProject.name = "UnifiedMetrics"
 
 val modulePrefix = ":unifiedmetrics-"
@@ -48,13 +58,3 @@ project(modulePrefix + platformPrefix + "fabric").projectDir = File(platformsDir
 val driversDir = File(rootDir, "drivers")
 project(modulePrefix + driverPrefix + "influx").projectDir = File(driversDir, "influx")
 project(modulePrefix + driverPrefix + "prometheus").projectDir = File(driversDir, "prometheus")
-
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        maven {
-            name = "Fabric"
-            url = uri("https://maven.fabricmc.net/")
-        }
-    }
-}
