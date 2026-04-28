@@ -1,7 +1,8 @@
 name: UnifiedMetrics
 main: dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
 description: "Fully-featured metrics plugin for Minecraft servers"
-api-version: 1.16
+api-version: 1.21
+folia-supported: true
 author: Cubxity
 version: ${version}
 load: STARTUP

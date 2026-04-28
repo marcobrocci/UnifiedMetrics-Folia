@@ -18,23 +18,29 @@
 package dev.cubxity.plugins.metrics.bukkit.metric.tick
 
 import dev.cubxity.plugins.metrics.bukkit.bootstrap.UnifiedMetricsBukkitBootstrap
+import dev.cubxity.plugins.metrics.bukkit.isFolia
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 
 class BukkitTickReporter(
     private val metric: TickCollection,
     private val bootstrap: UnifiedMetricsBukkitBootstrap
 ) : TickReporter, Runnable {
     private var taskId: Int? = null
+    private var foliaTask: ScheduledTask? = null
 
     override fun initialize() {
-        taskId = bootstrap.server.scheduler.runTaskTimer(bootstrap, this, 1, 1).taskId
+        if (isFolia) {
+            foliaTask = bootstrap.server.globalRegionScheduler.runAtFixedRate(bootstrap, { run() }, 1L, 1L)
+        } else {
+            taskId = bootstrap.server.scheduler.runTaskTimer(bootstrap, this, 1, 1).taskId
+        }
     }
 
     override fun dispose() {
-        val taskId = taskId
-        if (taskId !== null) {
-            bootstrap.server.scheduler.cancelTask(taskId)
-            this.taskId = null
-        }
+        foliaTask?.cancel()
+        foliaTask = null
+        taskId?.let { bootstrap.server.scheduler.cancelTask(it) }
+        taskId = null
     }
 
     override fun run() {

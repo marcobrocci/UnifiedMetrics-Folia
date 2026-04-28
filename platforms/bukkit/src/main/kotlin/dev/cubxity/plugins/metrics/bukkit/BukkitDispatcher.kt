@@ -22,29 +22,43 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.coroutines.CoroutineContext
 
+val isFolia: Boolean = runCatching {
+    Class.forName("io.papermc.paper.threadedregions.RegionizedServer")
+}.isSuccess
+
 @OptIn(InternalCoroutinesApi::class)
 class BukkitDispatcher(private val plugin: JavaPlugin) : CoroutineDispatcher(), Delay {
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun scheduleResumeAfterDelay(timeMillis: Long, continuation: CancellableContinuation<Unit>) {
-        val task = plugin.server.scheduler.runTaskLater(
-            plugin,
-            Runnable {
-                continuation.apply { resumeUndispatched(Unit) }
-            },
-            timeMillis / 50
-        )
-        continuation.invokeOnCancellation { task.cancel() }
+        val ticks = timeMillis / 50
+        if (isFolia) {
+            val task = plugin.server.globalRegionScheduler.runDelayed(
+                plugin,
+                { continuation.apply { resumeUndispatched(Unit) } },
+                ticks.coerceAtLeast(1)
+            )
+            continuation.invokeOnCancellation { task?.cancel() }
+        } else {
+            val task = plugin.server.scheduler.runTaskLater(
+                plugin,
+                Runnable { continuation.apply { resumeUndispatched(Unit) } },
+                ticks
+            )
+            continuation.invokeOnCancellation { task.cancel() }
+        }
     }
 
     override fun dispatch(context: CoroutineContext, block: Runnable) {
-        if (!context.isActive) {
-            return
-        }
+        if (!context.isActive) return
 
-        if (Bukkit.isPrimaryThread()) {
-            block.run()
+        if (isFolia) {
+            plugin.server.globalRegionScheduler.run(plugin) { block.run() }
         } else {
-            plugin.server.scheduler.runTask(plugin, block)
+            if (Bukkit.isPrimaryThread()) {
+                block.run()
+            } else {
+                plugin.server.scheduler.runTask(plugin, block)
+            }
         }
     }
 }
