@@ -32,15 +32,20 @@ allprojects {
     group = "dev.cubxity.plugins"
     description = "Fully featured metrics collector agent for Minecraft servers."
     version = "0.3.10-SNAPSHOT"
-
-
 }
 
-subprojects {
+// Fabric manages its own repositories via Loom — exclude it from root subprojects config
+val nonFabricProjects = subprojects.filter { it.name != "unifiedmetrics-platform-fabric" }
+
+configure(nonFabricProjects) {
     apply(plugin = "java")
     apply(plugin = "kotlin")
     apply(plugin = "signing")
     apply(plugin = "maven-publish")
+
+    repositories {
+        mavenCentral()
+    }
 
     tasks.withType<KotlinCompile> {
         compilerOptions {

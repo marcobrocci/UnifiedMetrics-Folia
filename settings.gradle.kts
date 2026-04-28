@@ -25,13 +25,6 @@ pluginManagement {
     }
 }
 
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
-    repositories {
-        mavenCentral()
-    }
-}
-
 rootProject.name = "UnifiedMetrics"
 
 val modulePrefix = ":unifiedmetrics-"
