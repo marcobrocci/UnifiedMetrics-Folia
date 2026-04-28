@@ -33,9 +33,7 @@ allprojects {
     description = "Fully featured metrics collector agent for Minecraft servers."
     version = "0.3.10-SNAPSHOT"
 
-    repositories {
-        mavenCentral()
-    }
+
 }
 
 subprojects {
